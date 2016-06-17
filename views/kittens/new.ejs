@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title> Kitten </title>
+  </head>
+  <body>
+    <h1>Add a Kitten</h1>
+    <form method="POST" action="/kittens/<%= kitten.id %>?_method=put">
+      <div>
+        <label> Kitten Name
+          <input name="kitten[name]" type="text" value="<%= kitten.name %>">
+        </label>
+       </div>
+       <div>
+         <button type="submit"> Update Kitten </button>
+       </div>
+     </form>
+
+     <form method="POST" action="/kittens/<%= kitten.id %>?_method=delete">
+       <div>
+         <button type="submit"> Delete Kitten </button>
+       </div>
+     </form>
+     <a href="/kittens">Home</a>
+     </body>
+     </html>
