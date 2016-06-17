@@ -2,13 +2,14 @@
 var express= require('express');
 var router= express.Router();
 var pg= require('pg');
-var db_url= process.env.DATABASE_URL || 'postgres://localhoset:5432/animals';
+var db_url= process.env.DATABASE_URL || 'postgres://localhost:5432/animals';
 
 router.get("/", function(req, res){
+//console.log("get something");
   pg.connect(db_url, function(err, client, done){
     done();
     if (err){
-    return console.error( "we assume our database is good.. try your search again", err);
+    return console.error( "err status", err);
     }
     client.query('SELECT * FROM kittens', function(err, data){
     if(err){
@@ -18,20 +19,22 @@ router.get("/", function(req, res){
     });
   });
 });
-router.get("/new", function(req, res){
+router.get('/new', function(req, res){
   res.render('kittens/new');
 });
-router.get("/:id", function(req, res){
+router.get('/:id', function(req, res){
   pg.connect(db_url, function(err, client, done){
     done();
     if(err){
       return console.error('error fetching from pool', err);
     }
-    client.query('SELECT FROM kittens WHERE id=$1', [req.params.id], function(err, data){
+    client.query('SELECT * FROM kittens WHERE id=$1', [req.params.id], function(err, data){
+      //console.log(data);
       if(err){
         return console.error("querying..", err);
       }
       var kitten = data.rows[0];
+      //console.log(kitten);
       if (!kitten) {
         res.redirect("/kittens");
       }
@@ -50,6 +53,7 @@ router.get('/:id/edit', function(req, res) {
         return console.error('error querying database', err);
       }
       var kitten = data.rows[0];
+      console.log(kitten);
       if (!kitten) {
         res.redirect("/kitten");
       }
